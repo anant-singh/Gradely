@@ -7,6 +7,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 
+
 # Create your views here.
 @login_required()
 def home(request):
@@ -16,7 +17,7 @@ def home(request):
 def login_view(request):
     context = {}
     context.update(csrf(request))
-    return render(request, 'login.html', context)
+    return render(request, 'main_app/login.html', context)
 
 
 def register_view(request):
@@ -34,7 +35,7 @@ def register_view(request):
     else:
         context = {}
         context.update(csrf(request))
-    return render(request, 'register.html', context)
+    return render(request, 'main_app/register.html', context)
 
 
 def logout_view(request):

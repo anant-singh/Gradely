@@ -85,7 +85,7 @@ STATIC_URL = '/static/'
 
 # Template files
 
-TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'))
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'main_app/templates'))
 
 # Authentication
 
