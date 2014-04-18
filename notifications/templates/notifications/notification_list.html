@@ -1,0 +1,18 @@
+{% if not notifications %}
+    <div id="notification-count" style="display: none;">0</div>
+    <li><a href="#">No notifications</a></li>
+{% else %}
+    <div id="notification-count" style="display: none;">{{ notifications | length }}</div>
+    {% for notification in notifications %}
+        <li>
+            <section class="thumbnail-in">
+                <div class="widget-im-tools tooltip-area pull-right">
+                    <span><time class="timeago" datetime="{{ notification.date_time }}">timeago</time></span>
+                </div>
+                <h4><a href="{{ notification.more_url }}">{{ notification.heading }}</a></h4>
+                <div class="im-thumbnail bg-theme"><i class="fa fa-bell-o"></i></div>
+                <div class="pre-text">{{ notification.message_text }}</div>
+            </section>
+        </li>
+    {% endfor %}
+{% endif %}

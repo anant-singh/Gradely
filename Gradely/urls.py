@@ -16,4 +16,6 @@ urlpatterns = patterns(
     url(r'^accounts/register/$', 'main_app.views.register_view', name='register_view'),
     url(r'^accounts/auth/$', 'main_app.views.auth_view', name='auth_view'),
     url(r'', include('main_app.urls', namespace='main_app')),
+    url(r'^notifications/', include('notifications.urls', namespace='notifications')),
+    url(r'^messaging/', include('messaging.urls', namespace='messaging'))
 )
