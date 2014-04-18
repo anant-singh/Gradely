@@ -1,0 +1,69 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Meta information -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <!-- Title-->
+    <title>Gradely | {% block title %}{% endblock %}</title>
+    <!-- Favicons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static 'main_app/ico/apple-touch-icon-144-precomposed.png' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'main_app/ico/apple-touch-icon-114-precomposed.png' %}">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'main_app/ico/apple-touch-icon-72-precomposed.png' %}">
+    <link rel="apple-touch-icon-precomposed" href="{% static 'main_app/ico/apple-touch-icon-57-precomposed.png' %}">
+    <link rel="shortcut icon" href="{% static 'main_app/ico/favicon.ico' %}">
+    <!-- CSS Stylesheet-->
+    <link type="text/css" rel="stylesheet" href="{% static 'main_app/css/bootstrap/bootstrap.min.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'main_app/css/bootstrap/bootstrap-themes.css' %}"/>
+    <link type="text/css" rel="stylesheet" href="{% static 'main_app/css/style.css' %}"/>
+
+    {# Custom styles for a page #}
+    <style>
+        {% block style %}
+
+        {% endblock %}
+    </style>
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+{# Custom content for a page #}
+{% block body %}
+
+{% endblock %}
+
+<!--
+////////////////////////////////////////////////////////////////////////
+//////////     JAVASCRIPT  LIBRARY     //////////
+/////////////////////////////////////////////////////////////////////
+-->
+
+<!-- Jquery Library -->
+<script type="text/javascript" src="{% static 'main_app/js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'main_app/js/jquery.cookie.js' %}"></script>
+<script type="text/javascript" src="{% static 'main_app/js/jquery.ui.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'main_app/plugins/bootstrap/bootstrap.min.js' %}"></script>
+<!-- Modernizr Library For HTML5 And CSS3 -->
+<script type="text/javascript" src="{% static 'main_app/js/modernizr/modernizr.js' %}"></script>
+<script type="text/javascript" src="{% static 'main_app/plugins/mmenu/jquery.mmenu.js' %}"></script>
+<!-- Library 10+ Form plugins-->
+<script type="text/javascript" src="{% static 'main_app/plugins/form/form.js' %}"></script>
+<!-- Datetime plugins -->
+<script type="text/javascript" src="{% static 'main_app/plugins/datetime/datetime.js' %}"></script>
+<!-- Library Chart-->
+<script type="text/javascript" src="{% static 'main_app/plugins/chart/chart.js' %}"></script>
+<!-- Library  5+ plugins for bootstrap -->
+<script type="text/javascript" src="{% static 'main_app/plugins/pluginsForBS/pluginsForBS.js' %}"></script>
+<!-- Library 10+ miscellaneous plugins -->
+<script type="text/javascript" src="{% static 'main_app/plugins/miscellaneous/miscellaneous.js' %}"></script>
+<!-- Library Themes Customize-->
+<script type="text/javascript" src="{% static 'main_app/js/caplet.custom.js' %}"></script>
+
+{# Custom javascript for a page #}
+{% block js %}
+
+{% endblock %}
+
+</body>
+</html>

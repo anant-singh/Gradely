@@ -1,31 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Meta information -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-    <!-- Title-->
-    <title>Gradely | Register</title>
-    <!-- Favicons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="/static/ico/apple-touch-icon-57-precomposed.png">
-    <link rel="shortcut icon" href="/static/ico/favicon.ico">
-    <!-- CSS Stylesheet-->
-    <link type="text/css" rel="stylesheet" href="/static/css/bootstrap/bootstrap.min.css"/>
-    <link type="text/css" rel="stylesheet" href="/static/css/bootstrap/bootstrap-themes.css"/>
-    <link type="text/css" rel="stylesheet" href="/static/css/style.css"/>
+{% extends "main_app/base.html" %}
+{% load staticfiles %}
+{% block title %}Register{% endblock %}
+{% block style %}
+    #validate-wizard {
+        width: 330px;
+        margin: auto;
+    }
+{% endblock %}
+{% block body_class %}full-lg{% endblock %}
 
-    <style>
-        #validate-wizard {
-            width: 330px;
-            margin: auto;
+{% block js %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        //Login animation to center
+        function toCenter() {
+            var mainH = $("#main").outerHeight();
+            var accountH = $(".account-wall").outerHeight();
+            var marginT = (mainH - accountH) / 2;
+            if (marginT > 30) {
+                $(".account-wall").css("margin-top", marginT - 15);
+            } else {
+                $(".account-wall").css("margin-top", 30);
+            }
         }
-    </style>
 
-</head>
-<body class="full-lg">
+        var toResize;
+        $(window).resize(function (e) {
+            clearTimeout(toResize);
+            toResize = setTimeout(toCenter(), 500);
+        });
+
+        //Canvas Loading
+        var throbber = new Throbber({  size: 32, padding: 17, strokewidth: 2.8, lines: 12, rotationspeed: 0, fps: 15 });
+        throbber.appendTo(document.getElementById('canvas_loading'));
+        throbber.start();
+
+        $('#validate-wizard').bootstrapWizard({
+            tabClass: "nav-wizard",
+            onNext: function (tab, navigation, index) {
+                var content = $('#step' + index);
+                if (typeof  content.attr("parsley-validate") != 'undefined') {
+                    var $valid = content.parsley('validate');
+                    if (!$valid) {
+                        return false;
+                    }
+                }
+                ;
+
+                // Set the name for the next tab
+                $('#step3 h3').find("span").html($('#fullname').val());
+            },
+            onTabClick: function (tab, navigation, index) {
+                $.notific8('Please click <strong>next button</strong> to wizard next step!! ', { life: 5000, theme: "danger", heading: " Wizard Tip :); "});
+                return false;
+            },
+            onTabShow: function (tab, navigation, index) {
+                tab.prevAll().addClass('completed');
+                tab.nextAll().removeClass('completed');
+                if (tab.hasClass("active")) {
+                    tab.removeClass('completed');
+                }
+                var $total = navigation.find('li').length;
+                var $current = index + 1;
+                var $percent = ($current / $total) * 100;
+                $('#validate-wizard').find('.progress-bar').css({width: $percent + '%'});
+                $('#validate-wizard').find('.wizard-status span').html($current + " / " + $total);
+
+                toCenter();
+
+                var main = $("#main");
+                //scroll to top
+                main.animate({
+                    scrollTop: 0
+                }, 500);
+                if ($percent == 100) {
+                    setTimeout(function () {
+                        main.addClass("slideDown")
+                    }, 100);
+                    setTimeout(function () {
+                        main.removeClass("slideDown")
+                    }, 3000);
+                    setTimeout("window.location.href='auth/login/'", 3500);
+                }
+
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+{% block body %}
 <div id="wrapper">
 
     <div id="loading-top">
@@ -150,111 +214,4 @@
 
 </div>
 <!-- //wrapper-->
-
-
-<!--
-////////////////////////////////////////////////////////////////////////
-//////////     JAVASCRIPT  LIBRARY     //////////
-/////////////////////////////////////////////////////////////////////
--->
-
-<!-- Jquery Library -->
-<script type="text/javascript" src="/static/js/jquery.min.js"></script>
-<script type="text/javascript" src="/static/js/jquery.ui.min.js"></script>
-<script type="text/javascript" src="/static/plugins/bootstrap/bootstrap.min.js"></script>
-<!-- Modernizr Library For HTML5 And CSS3 -->
-<script type="text/javascript" src="/static/js/modernizr/modernizr.js"></script>
-<script type="text/javascript" src="/static/plugins/mmenu/jquery.mmenu.js"></script>
-<!-- Library 10+ Form plugins-->
-<script type="text/javascript" src="/static/plugins/form/form.js"></script>
-<!-- Datetime plugins -->
-<script type="text/javascript" src="/static/plugins/datetime/datetime.js"></script>
-<!-- Library Chart-->
-<script type="text/javascript" src="/static/plugins/chart/chart.js"></script>
-<!-- Library  5+ plugins for bootstrap -->
-<script type="text/javascript" src="/static/plugins/pluginsForBS/pluginsForBS.js"></script>
-<!-- Library 10+ miscellaneous plugins -->
-<script type="text/javascript" src="/static/plugins/miscellaneous/miscellaneous.js"></script>
-<!-- Library Themes Customize-->
-<script type="text/javascript" src="/static/js/caplet.custom.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-        //Login animation to center
-        function toCenter() {
-            var mainH = $("#main").outerHeight();
-            var accountH = $(".account-wall").outerHeight();
-            var marginT = (mainH - accountH) / 2;
-            if (marginT > 30) {
-                $(".account-wall").css("margin-top", marginT - 15);
-            } else {
-                $(".account-wall").css("margin-top", 30);
-            }
-        }
-
-        var toResize;
-        $(window).resize(function (e) {
-            clearTimeout(toResize);
-            toResize = setTimeout(toCenter(), 500);
-        });
-
-        //Canvas Loading
-        var throbber = new Throbber({  size: 32, padding: 17, strokewidth: 2.8, lines: 12, rotationspeed: 0, fps: 15 });
-        throbber.appendTo(document.getElementById('canvas_loading'));
-        throbber.start();
-
-        $('#validate-wizard').bootstrapWizard({
-            tabClass: "nav-wizard",
-            onNext: function (tab, navigation, index) {
-                var content = $('#step' + index);
-                if (typeof  content.attr("parsley-validate") != 'undefined') {
-                    var $valid = content.parsley('validate');
-                    if (!$valid) {
-                        return false;
-                    }
-                }
-                ;
-
-                // Set the name for the next tab
-                $('#step3 h3').find("span").html($('#fullname').val());
-            },
-            onTabClick: function (tab, navigation, index) {
-                $.notific8('Please click <strong>next button</strong> to wizard next step!! ', { life: 5000, theme: "danger", heading: " Wizard Tip :); "});
-                return false;
-            },
-            onTabShow: function (tab, navigation, index) {
-                tab.prevAll().addClass('completed');
-                tab.nextAll().removeClass('completed');
-                if (tab.hasClass("active")) {
-                    tab.removeClass('completed');
-                }
-                var $total = navigation.find('li').length;
-                var $current = index + 1;
-                var $percent = ($current / $total) * 100;
-                $('#validate-wizard').find('.progress-bar').css({width: $percent + '%'});
-                $('#validate-wizard').find('.wizard-status span').html($current + " / " + $total);
-
-                toCenter();
-
-                var main = $("#main");
-                //scroll to top
-                main.animate({
-                    scrollTop: 0
-                }, 500);
-                if ($percent == 100) {
-                    setTimeout(function () {
-                        main.addClass("slideDown")
-                    }, 100);
-                    setTimeout(function () {
-                        main.removeClass("slideDown")
-                    }, 3000);
-                    setTimeout("window.location.href='auth/login/'", 3500);
-                }
-
-            }
-        });
-
-
-    });
-</script>
-</body>
-</html>
+{% endblock %}

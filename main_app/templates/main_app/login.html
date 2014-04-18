@@ -1,24 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Meta information -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-    <!-- Title-->
-    <title>Gradely | Login</title>
-    <!-- Favicons -->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/static/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/static/ico/apple-touch-icon-114-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/static/ico/apple-touch-icon-72-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" href="/static/ico/apple-touch-icon-57-precomposed.png">
-    <link rel="shortcut icon" href="/static/ico/favicon.ico">
-    <!-- CSS Stylesheet-->
-    <link type="text/css" rel="stylesheet" href="/static/css/bootstrap/bootstrap.min.css"/>
-    <link type="text/css" rel="stylesheet" href="/static/css/bootstrap/bootstrap-themes.css"/>
-    <link type="text/css" rel="stylesheet" href="/static/css/style.css"/>
+{% extends "main_app/base.html" %}
+{% load staticfiles %}
+{% block title %}Login{% endblock %}
+{% block style %}
+{% endblock %}
+{% block body_class %}full-lg{% endblock %}
 
-</head>
-<body class="full-lg">
+{% block js %}
+    <script type="text/javascript">
+    $(function () {
+        //Login animation to center
+        function toCenter() {
+            var mainH = $("#main").outerHeight();
+            var accountH = $(".account-wall").outerHeight();
+            var marginT = (mainH - accountH) / 2;
+            if (marginT > 30) {
+                $(".account-wall").css("margin-top", marginT - 15);
+            } else {
+                $(".account-wall").css("margin-top", 30);
+            }
+        }
+
+        toCenter();
+        var toResize;
+        $(window).resize(function (e) {
+            clearTimeout(toResize);
+            toResize = setTimeout(toCenter(), 500);
+        });
+
+        //Canvas Loading
+        var throbber = new Throbber({  size: 32, padding: 17, strokewidth: 2.8, lines: 12, rotationspeed: 0, fps: 15 });
+        throbber.appendTo(document.getElementById('canvas_loading'));
+        throbber.start();
+
+
+        $("#form-signin").submit(function (event) {
+            event.preventDefault();
+            var main = $("#main");
+            //scroll to top
+            main.animate({
+                scrollTop: 0
+            }, 500);
+            main.addClass("slideDown");
+
+            // send username and password to php check login
+            $.ajax({
+                url: "/accounts/auth/", data: $(this).serialize(), type: "POST", dataType: 'json'
+            }).done(function (e) {
+                setTimeout(function () {
+                    main.removeClass("slideDown")
+                }, e.status == 'false' ? 500 : 3000);
+                if (e.status != 'true') {
+                    $.notific8(e.reason, { life: 5000, horizontalEdge: "bottom", theme: "danger", heading: " ERROR :); "});
+                    return false;
+                }
+                setTimeout(function () {
+                    $("#loading-top span").text("Authenticated...")
+                }, 500);
+                setTimeout(function () {
+                    $("#loading-top span").text("Redirecting to account page...")
+                }, 1500);
+                setTimeout("window.location.href='/'", 3100);
+            }).fail(function (jqXHR, status, error) {
+                $.notific8(error.toString(), { life: 5000, horizontalEdge: "bottom", theme: "danger", heading: " ERROR :); "});
+            });
+
+        });
+    });
+</script>
+{% endblock %}
+
+{% block body %}
 <div id="wrapper">
 
     <div id="loading-top">
@@ -80,94 +131,4 @@
 
 </div>
 <!-- //wrapper-->
-
-
-<!--
-////////////////////////////////////////////////////////////////////////
-//////////     JAVASCRIPT  LIBRARY     //////////
-/////////////////////////////////////////////////////////////////////
--->
-
-<!-- Jquery Library -->
-<script type="text/javascript" src="/static/js/jquery.min.js"></script>
-<script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
-<script type="text/javascript" src="/static/js/jquery.ui.min.js"></script>
-<script type="text/javascript" src="/static/plugins/bootstrap/bootstrap.min.js"></script>
-<!-- Modernizr Library For HTML5 And CSS3 -->
-<script type="text/javascript" src="/static/js/modernizr/modernizr.js"></script>
-<script type="text/javascript" src="/static/plugins/mmenu/jquery.mmenu.js"></script>
-<!-- Library 10+ Form plugins-->
-<script type="text/javascript" src="/static/plugins/form/form.js"></script>
-<!-- Datetime plugins -->
-<script type="text/javascript" src="/static/plugins/datetime/datetime.js"></script>
-<!-- Library Chart-->
-<script type="text/javascript" src="/static/plugins/chart/chart.js"></script>
-<!-- Library  5+ plugins for bootstrap -->
-<script type="text/javascript" src="/static/plugins/pluginsForBS/pluginsForBS.js"></script>
-<!-- Library 10+ miscellaneous plugins -->
-<script type="text/javascript" src="/static/plugins/miscellaneous/miscellaneous.js"></script>
-<!-- Library Themes Customize-->
-<script type="text/javascript" src="/static/js/caplet.custom.js"></script>
-<script type="text/javascript">
-    $(function () {
-        //Login animation to center
-        function toCenter() {
-            var mainH = $("#main").outerHeight();
-            var accountH = $(".account-wall").outerHeight();
-            var marginT = (mainH - accountH) / 2;
-            if (marginT > 30) {
-                $(".account-wall").css("margin-top", marginT - 15);
-            } else {
-                $(".account-wall").css("margin-top", 30);
-            }
-        }
-
-        toCenter();
-        var toResize;
-        $(window).resize(function (e) {
-            clearTimeout(toResize);
-            toResize = setTimeout(toCenter(), 500);
-        });
-
-        //Canvas Loading
-        var throbber = new Throbber({  size: 32, padding: 17, strokewidth: 2.8, lines: 12, rotationspeed: 0, fps: 15 });
-        throbber.appendTo(document.getElementById('canvas_loading'));
-        throbber.start();
-
-
-        $("#form-signin").submit(function (event) {
-            event.preventDefault();
-            var main = $("#main");
-            //scroll to top
-            main.animate({
-                scrollTop: 0
-            }, 500);
-            main.addClass("slideDown");
-
-            // send username and password to php check login
-            $.ajax({
-                url: "/accounts/auth/", data: $(this).serialize(), type: "POST", dataType: 'json'
-            }).done(function (e) {
-                setTimeout(function () {
-                    main.removeClass("slideDown")
-                }, e.status == 'false' ? 500 : 3000);
-                if (e.status != 'true') {
-                    $.notific8(e.reason, { life: 5000, horizontalEdge: "bottom", theme: "danger", heading: " ERROR :); "});
-                    return false;
-                }
-                setTimeout(function () {
-                    $("#loading-top span").text("Authenticated...")
-                }, 500);
-                setTimeout(function () {
-                    $("#loading-top span").text("Redirecting to account page...")
-                }, 1500);
-                setTimeout("window.location.href='/'", 3100);
-            }).fail(function (jqXHR, status, error) {
-                $.notific8(error.toString(), { life: 5000, horizontalEdge: "bottom", theme: "danger", heading: " ERROR :); "});
-            });
-
-        });
-    });
-</script>
-</body>
-</html>
+{% endblock %}
