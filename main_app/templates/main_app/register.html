@@ -214,7 +214,7 @@
                             main.removeClass("slideDown")
                         }, e.status == 'false' ? 500 : 3000);
                         if (e.status != 'true') {
-                            $.notific8(e.reason, { life: 5000, horizontalEdge: "bottom", theme: "danger", heading: " ERROR :); "});
+                            $.notific8(e.reason, { life: 5000, horizontalEdge: "bottom", theme: "danger", heading: "ERROR"});
                             return false;
                         }
                         setTimeout(function () {
@@ -225,7 +225,7 @@
                         }, 1500);
                         setTimeout("window.location.href='/'", 3100);
                     }).fail(function (jqXHR, status, error) {
-                        $.notific8(error.toString(), { life: 5000, horizontalEdge: "bottom", theme: "danger", heading: " ERROR :); "});
+                        $.notific8(error.toString(), { life: 5000, horizontalEdge: "bottom", theme: "danger", heading: "ERROR"});
                     });
                 }
 

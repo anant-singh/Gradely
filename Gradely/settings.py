@@ -91,4 +91,4 @@ TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'))
 
 # Authentication
 
-LOGIN_URL = 'accounts/login/'
+LOGIN_URL = '/accounts/login/'

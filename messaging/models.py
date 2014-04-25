@@ -8,5 +8,6 @@ class Message(models.Model):
     """
     sender = models.ForeignKey(User, related_name='sent_messages')
     receiver = models.ForeignKey(User, related_name='received_messages')
+    subject = models.TextField()
     message_text = models.TextField()
     date_time = models.DateTimeField(auto_now=True)

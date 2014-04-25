@@ -16,7 +16,7 @@ var GradelyNotification = function(notifications_container_id, notification_coun
     var init = (function() {
         notifications_container = $('#' + notifications_container_id);
         notification_count_container = $('#' + notification_count_container_id);
-        poll_timer = setInterval(function(){ get_data(); }, 1000);
+        poll_timer = setInterval(function(){ get_data(); }, 2000);
     })();
 
     var stop_polling = function() {
@@ -41,3 +41,16 @@ var GradelyNotification = function(notifications_container_id, notification_coun
         stop_polling: stop_polling
     };
 };
+
+function mark_as_read(notification_pk) {
+
+    $.ajax({
+        type: "POST",
+        url: '/notifications/mark_notification_as_read/',
+        data: {"notification_pk": notification_pk},
+        success: function (data, textStatus, jqXHR) {
+            console.log(data);
+        }
+    });
+
+}

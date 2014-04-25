@@ -11,3 +11,5 @@ class Notification(models.Model):
     heading = models.TextField()
     message_text = models.TextField()
     more_url = models.URLField()
+    is_unread = models.BooleanField()
+
