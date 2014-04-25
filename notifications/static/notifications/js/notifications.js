@@ -25,7 +25,10 @@ var GradelyNotification = function(notifications_container_id, notification_coun
 
     var ajax_success = function(data, textStatus, jqXHR) {
         notifications_container.html(data);
-        notification_count_container.text($('#notification-count').text());
+        var notification_count = $('#notification-count').text();
+        if (notification_count > 0) {
+            notification_count_container.text(notification_count);
+        }
     };
 
     var get_data = function() {
