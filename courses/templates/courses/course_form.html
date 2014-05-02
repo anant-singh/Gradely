@@ -1,0 +1,20 @@
+<section class="panel corner-flip">
+    <div class="panel-body">
+        <div id="course-form-status" style="display: none;">{{ status }}</div>
+        <form id="course-create-form" action="{% url 'courses:create_course' %}" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group fieldWrapper">
+                {{ field.errors }}
+                {{ field.label_tag }} {{ field }}
+            </div>
+            {% endfor %}
+            <div class="form-group offset">
+                <div>
+                    <button type="submit" class="btn btn-theme">Submit</button>
+                    <button type="reset" class="btn">Cancel</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

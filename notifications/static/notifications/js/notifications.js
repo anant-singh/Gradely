@@ -16,7 +16,7 @@ var GradelyNotification = function(notifications_container_id, notification_coun
     var init = (function() {
         notifications_container = $('#' + notifications_container_id);
         notification_count_container = $('#' + notification_count_container_id);
-        poll_timer = setInterval(function(){ get_data(); }, 2000);
+        poll_timer = setInterval(function(){ get_data(); }, 100000);
     })();
 
     var stop_polling = function() {

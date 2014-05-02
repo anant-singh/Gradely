@@ -17,5 +17,6 @@ urlpatterns = patterns(
     url(r'^accounts/auth/$', 'main_app.views.auth_view', name='auth_view'),
     url(r'', include('main_app.urls', namespace='main_app')),
     url(r'^notifications/', include('notifications.urls', namespace='notifications')),
-    url(r'^messaging/', include('messaging.urls', namespace='messaging'))
+    url(r'^messaging/', include('messaging.urls', namespace='messaging')),
+    url(r'^courses/', include('courses.urls', namespace='courses'))
 )

@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'main_app',
     'notifications',
     'messaging',
+    'courses',
 )
 
 MIDDLEWARE_CLASSES = (
