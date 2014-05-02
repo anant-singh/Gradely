@@ -14,7 +14,7 @@ def home(request):
     """
     Show the home page.
     """
-    return render(request, 'main_app/profile.html', {})
+    return render(request, 'main_app/dashboard.html', {})
 
 
 def login_view(request):

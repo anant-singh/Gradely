@@ -21,6 +21,26 @@ class Course(models.Model):
     course_staff = models.ManyToManyField(User, related_name="course_staff")
 
 
+class MachineProblems(models.Model):
+    course = models.ForeignKey('Course')
+    name = models.TextField(verbose_name="Name of MP")
+    source_path = models.FilePathField(verbose_name="Path for source files")
+    due_date = models.DateField(verbose_name="Due Date")
+    publish_date = models.DateField(verbose_name="Publish Date")
+
+
+class GradeSheet(models.Model):
+    machine_problem = models.ForeignKey('MachineProblems')
+    student = models.ForeignKey(User, limit_choices_to={'groups': 'Student'}, related_name="grade_students")
+    grade_fields = models.ManyToManyField('GradeFields')
+
+
+class GradeFields(models.Model):
+    grade_sheet = models.ForeignKey('GradeSheet')
+    criteria = models.TextField(verbose_name="Rubric criteria")
+    value = models.IntegerField(verbose_name="Criteria Grade")
+
+
 class CourseForm(ModelForm):
     class Meta:
         model = Course

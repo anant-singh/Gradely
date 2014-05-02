@@ -1,0 +1,103 @@
+{% extends "main_app/layout.html" %}
+{% load staticfiles %}
+{% block title %}Dashboard{% endblock title %}
+
+{% block main_content %}
+    <ol class="breadcrumb">
+        <li><a href="#">Home</a></li>
+    </ol>
+    <!-- //breadcrumb-->
+
+    <div id="content">
+
+    <div class="row">
+    <div class="col-md-8">
+    <section class="panel">
+        <div class="panel-body">
+            <header class="panel-heading">
+			    <h2><strong>CS-242</strong> Students</h2><br>
+			</header>
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" data-provide="data-table">
+                    <thead>
+                    <tr>
+                        <th> Fullname</th>
+                        <th> Username</th>
+                        <th> Status</th>
+                        <th> View</th>
+                    </tr>
+                    </thead>
+                    <tbody align="center">
+                    {% for student in students %}
+                    <tr>
+                        <td> {{ student.firstname }} {{ student.lastname }}</td>
+                        <td> {{ student.username }}</td>
+                        <td><span class="label label-sm bg-theme-inverse"> {{ student.is_active }} </span></td>
+                        <td></td>
+                    </tr>
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    </div>
+    <div class="col-md-4">
+
+        <div class="well bg-theme">
+            <div class="widget-tile">
+                <section>
+                    <h5><strong>CS-242</strong> Students </h5>
+
+                    <h2>{{ students|length }}</h2>
+
+                    <div class="progress progress-xs progress-white progress-over-tile">
+                        <div class="progress-bar  progress-bar-white" aria-valuetransitiongoal="{{ students|length }}"
+                             aria-valuemax="200"></div>
+                    </div>
+                    <label class="progress-label label-white"> Just 20 member to limit , <a href="#">Upgrade Now</a>
+                    </label>
+                </section>
+                <div class="hold-icon"><i class="fa fa-bar-chart-o"></i></div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+    </div>
+    <!-- //content > row-->
+
+    </div>
+    <!-- //content-->
+
+{% endblock main_content %}
+
+{% block js %}
+<!-- Library Owl Carousel  -->
+<script type="text/javascript" src="{% static 'main_app/plugins/owl-carousel/owl.carousel.js' %}"></script>
+<link href="{% static 'main_app/plugins/owl-carousel/owl.carousel.css' %}" rel="stylesheet">
+<link href="{% static 'main_app/plugins/owl-carousel/owl.theme.css' %}" rel="stylesheet">
+<link href="{% static 'main_app/plugins/owl-carousel/owl.transitions.css' %}" rel="stylesheet">
+<!-- Library datable -->
+<script type="text/javascript" src="{% static 'main_app/plugins/datable/jquery.dataTables.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'main_app/plugins/datable/dataTables.bootstrap.js' %}"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		$("#owl-demo").owlCarousel({
+			autoPlay : 5000,
+			stopOnHover : true,
+			paginationSpeed : 5000,
+			goToFirstSpeed : 3000,
+			singleItem : true,
+			autoHeight : true,
+			transitionStyle:"fade"
+		});
+		$('table[data-provide="data-table"]').dataTable({
+			"iDisplayLength": 5
+		});
+	});
+</script>
+{% endblock %}
