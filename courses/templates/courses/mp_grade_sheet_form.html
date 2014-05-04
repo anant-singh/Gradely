@@ -1,0 +1,20 @@
+{% extends "main_app/layout.html" %}
+{% load staticfiles %}
+{% block title %}Add MP Grade{% endblock title %}
+
+{% block main_content %}
+
+<section class="panel corner-flip">
+    <div class="panel-body">
+        <h3>
+        {{ gradesheet.machine_problem.course.subject_code }} {{ gradesheet.machine_problem.course.number }} {{ gradesheet.machine_problem.name }} Gradesheet
+        </h3>
+        <form>
+            {% for gradefield in gradesheet.grade_fields.all %}
+            <input>{{ gradefield.criteria }}
+            {% endfor %}
+        </form>
+    </div>
+</section>
+
+{% endblock main_content %}

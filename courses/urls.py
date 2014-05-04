@@ -3,6 +3,6 @@ from courses import views
 
 urlpatterns = patterns(
     '',
-    url(r'^create_course/$', views.create_course, name='create_course'),
+    url(r'^add_mp_grade/(?P<mp_id>\d+)/(?P<student_id>\d+)/$', views.add_mp_grade, name='add_mp_grade'),
     url(r'^$', views.course_index, name='course_index'),
 )

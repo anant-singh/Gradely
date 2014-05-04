@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.db import models
-from django.forms import ModelForm
 
 
 class Course(models.Model):
@@ -12,36 +11,41 @@ class Course(models.Model):
     )
 
     id = models.AutoField(primary_key=True)
-    subject = models.CharField(max_length=100, verbose_name="Course Subject")
-    number = models.IntegerField(verbose_name="Course Number")
+    department = models.CharField(max_length=100, verbose_name="Department")
+    crn = models.IntegerField(unique=True, verbose_name="CRN")
     subject_code = models.CharField(max_length=4, verbose_name="Subject Code")
+    number = models.IntegerField(verbose_name="Number")
     title = models.CharField(max_length=100, verbose_name="Course Title")
     term = models.CharField(max_length=4, verbose_name="Course Term", choices=term_choices)
-    students = models.ManyToManyField(User, related_name="course_students")
-    course_staff = models.ManyToManyField(User, related_name="course_staff")
+    owner = models.ForeignKey(User, verbose_name="Course Owner")
+
+    def __unicode__(self):
+        return "{0}: {1} {2}".format(self.crn, self.subject_code, self.number)
 
 
-class MachineProblems(models.Model):
+class MachineProblem(models.Model):
     course = models.ForeignKey('Course')
-    name = models.TextField(verbose_name="Name of MP")
-    source_path = models.FilePathField(verbose_name="Path for source files")
+    name = models.CharField(max_length=100, verbose_name="Name of MP")
+    #source_path = models.FilePathField(verbose_name="Path for source files")
     due_date = models.DateField(verbose_name="Due Date")
     publish_date = models.DateField(verbose_name="Publish Date")
 
+    def __unicode__(self):
+        return "{0}: {1}".format(self.course, self.name)
+
 
 class GradeSheet(models.Model):
-    machine_problem = models.ForeignKey('MachineProblems')
-    student = models.ForeignKey(User, limit_choices_to={'groups': 'Student'}, related_name="grade_students")
-    grade_fields = models.ManyToManyField('GradeFields')
+    machine_problem = models.ForeignKey(MachineProblem)
+    student = models.ForeignKey(User)
+    grade_fields = models.ManyToManyField('GradeField')
+
+    def __unicode__(self):
+        return "MP: {0} Student: {1}".format(self.machine_problem, self.student)
 
 
-class GradeFields(models.Model):
-    grade_sheet = models.ForeignKey('GradeSheet')
-    criteria = models.TextField(verbose_name="Rubric criteria")
-    value = models.IntegerField(verbose_name="Criteria Grade")
+class GradeField(models.Model):
+    criteria = models.CharField(max_length=100, verbose_name="Rubric criteria")
+    max_value = models.IntegerField(verbose_name="Max Grade")
 
-
-class CourseForm(ModelForm):
-    class Meta:
-        model = Course
-        fields = ['number', 'subject', 'subject_code', 'title', 'term', 'students', 'course_staff']
+    def __unicode__(self):
+        return self.criteria

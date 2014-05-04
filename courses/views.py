@@ -1,32 +1,17 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from models import Course, CourseForm
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.models import User
+from models import MachineProblem, GradeSheet
+
+
+@login_required()
+def add_mp_grade(request, mp_id, student_id):
+    mp = get_object_or_404(MachineProblem, pk=mp_id)
+    student = get_object_or_404(User, pk=student_id)
+    gradesheet = get_object_or_404(GradeSheet, machine_problem=mp, student=student)
+    return render(request, 'courses/mp_grade_sheet_form.html', {'gradesheet': gradesheet})
 
 
 @login_required()
 def course_index(request):
     return render(request, 'courses/course_index.html', {})
-
-
-@login_required()
-def create_course(request):
-    status = False
-    if request.method == 'POST':  # If the form has been submitted...
-        # CourseForm was defined in the previous section
-        form = CourseForm(request.POST)  # A form bound to the POST data
-        if form.is_valid():  # All validation rules pass
-            c = Course(
-                subject=form.cleaned_data['subject'],
-                number=form.cleaned_data['number'],
-                subject_code=form.cleaned_data['subject_code'],
-                title=form.cleaned_data['title'],
-                term=form.cleaned_data['term'],
-                students=form.cleaned_data['students'],
-                course_staff=form.cleaned_data['course_staff'],
-            )
-            c.save()
-            status = True
-    else:
-        form = CourseForm()  # An unbound form
-
-    return render(request, 'courses/course_form.html', {'status': status, 'form': form})
